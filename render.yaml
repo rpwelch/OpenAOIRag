@@ -1,0 +1,15 @@
+# Render Blueprint — one-click deploy of the DocChat Streamlit app
+services:
+  - type: web
+    name: docchat
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: streamlit run app.py --server.port $PORT --server.address 0.0.0.0 --server.headless true
+    healthCheckPath: /_stcore/health
+    autoDeployTrigger: commit
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.8
+      - key: OPENAI_API_KEY
+        sync: false        # you type it in the Render dashboard; never stored in Git
